@@ -8,7 +8,7 @@ import { catchError, map, startWith, switchMap, tap } from 'rxjs/operators'
 import { ErrorAlert } from '@sourcegraph/branded/src/components/alerts'
 import { Form } from '@sourcegraph/branded/src/components/Form'
 import { asError, createAggregateError, isErrorLike } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import { Scalars } from '@sourcegraph/shared/src/graphql-operations'
 import * as GQL from '@sourcegraph/shared/src/schema'
 import { Alert, Button, useEventObservable, Link, Typography } from '@sourcegraph/wildcard'
@@ -265,7 +265,7 @@ function generateProductLicenseForSubscription(
         `,
         args
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (
                 !data ||
                 !data.dotcom ||

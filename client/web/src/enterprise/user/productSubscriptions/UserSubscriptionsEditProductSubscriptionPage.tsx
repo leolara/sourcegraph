@@ -8,7 +8,7 @@ import { catchError, map, mapTo, startWith, switchMap, tap } from 'rxjs/operator
 
 import { ErrorAlert } from '@sourcegraph/branded/src/components/alerts'
 import { asError, createAggregateError, isErrorLike } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import * as GQL from '@sourcegraph/shared/src/schema'
 import { ThemeProps } from '@sourcegraph/shared/src/theme'
 import {
@@ -170,7 +170,7 @@ function queryProductSubscription(uuid: string): Observable<ProductSubscription>
         `,
         { uuid }
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data || !data.dotcom || !data.dotcom.productSubscription || (errors && errors.length > 0)) {
                 throw createAggregateError(errors)
             }
@@ -204,7 +204,7 @@ function updatePaidProductSubscription(
         `,
         args
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data || !data.dotcom || !data.dotcom.updatePaidProductSubscription || (errors && errors.length > 0)) {
                 throw createAggregateError(errors)
             }

@@ -23,7 +23,7 @@ interface Props {
      * Optional children that appear below the title bar that can be expanded/collapsed. If present,
      * a button that expands or collapses the children will be shown.
      */
-    children?: React.ReactNode | undefined
+    children?: React.ReactNode
 
     /**
      * Whether the children are expanded and visible by default.

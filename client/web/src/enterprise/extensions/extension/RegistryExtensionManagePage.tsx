@@ -11,7 +11,7 @@ import { catchError, concatMap, map, tap } from 'rxjs/operators'
 import { ErrorAlert } from '@sourcegraph/branded/src/components/alerts'
 import { Form } from '@sourcegraph/branded/src/components/Form'
 import { asError, createAggregateError, ErrorLike, isErrorLike } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import * as GQL from '@sourcegraph/shared/src/schema'
 import {
     Button,
@@ -59,7 +59,7 @@ function updateExtension(
         `,
         args
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (
                 !data ||
                 !data.extensionRegistry ||

@@ -11,7 +11,6 @@ import {
     dataOrThrowErrors,
     createInvalidGraphQLMutationResponseError,
     isErrorGraphQLResult,
-    GraphQLResult,
 } from '@sourcegraph/http-client'
 import {
     CloneInProgressError,
@@ -710,7 +709,7 @@ export function addExternalService(
         variables: { input },
         mightContainPrivateInfo: true,
     }).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data?.addExternalService || (errors && errors.length > 0)) {
                 eventLogger.log('AddExternalServiceFailed')
                 throw createAggregateError(errors)

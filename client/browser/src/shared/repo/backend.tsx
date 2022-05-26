@@ -2,7 +2,7 @@ import { from, Observable } from 'rxjs'
 import { delay, filter, map, retryWhen, switchMap } from 'rxjs/operators'
 
 import { createAggregateError, memoizeObservable, sha256 } from '@sourcegraph/common'
-import { dataOrThrowErrors, gql, GraphQLResult } from '@sourcegraph/http-client'
+import { dataOrThrowErrors, gql } from '@sourcegraph/http-client'
 import {
     CloneInProgressError,
     RepoNotFoundError,
@@ -206,7 +206,7 @@ export const fetchBlobContentLines = memoizeObservable(
                 mightContainPrivateInfo: true,
             })
         ).pipe(
-            map(({ data, errors }: GraphQLResult<any>) => {
+            map(({ data, errors }) => {
                 if (!data) {
                     throw new Error('Invalid response')
                 }

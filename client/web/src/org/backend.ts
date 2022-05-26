@@ -2,7 +2,7 @@ import { concat, Observable } from 'rxjs'
 import { map, mergeMap } from 'rxjs/operators'
 
 import { createAggregateError } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 
 import { refreshAuthenticatedUser } from '../auth'
 import { requestGraphQL } from '../backend/graphql'
@@ -107,7 +107,7 @@ export function updateOrganization(id: Scalars['ID'], displayName: string): Prom
         }
     )
         .pipe(
-            map(({ data, errors }: GraphQLResult<any>) => {
+            map(({ data, errors }) => {
                 if (!data || (errors && errors.length > 0)) {
                     eventLogger.log('UpdateOrgSettingsFailed')
                     throw createAggregateError(errors)

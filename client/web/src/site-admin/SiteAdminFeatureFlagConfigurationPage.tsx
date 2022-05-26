@@ -450,7 +450,7 @@ const FeatureFlagOverrideItem: FunctionComponent<
     const nsValue = orgID > 0 ? orgID : userID
 
     const onError = useCallback(
-        (error: React.SetStateAction<Error | undefined>) => {
+        (error: Error) => {
             setError(error)
         },
         [setError]

@@ -17,11 +17,14 @@ import {
 
 import { FileSearchResult, limitGroup } from './FileSearchResult'
 
-jest.mock('react-visibility-sensor', (): typeof _VisibilitySensor => ({ children, onChange }: any) => (
-    <>
-        <MockVisibilitySensor onChange={onChange}>{children}</MockVisibilitySensor>
-    </>
-))
+jest.mock(
+    'react-visibility-sensor',
+    (): typeof _VisibilitySensor => ({ children, onChange }: React.ComponentProps<typeof _VisibilitySensor>) => (
+        <>
+            <MockVisibilitySensor onChange={onChange}>{children}</MockVisibilitySensor>
+        </>
+    )
+)
 
 describe('FileSearchResult', () => {
     afterAll(cleanup)

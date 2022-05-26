@@ -87,9 +87,6 @@ describe('GlobalNavbar', () => {
         test('is highlighted on search page', async () => {
             await driver.page.goto(driver.sourcegraphBaseUrl + '/search?q=test&patternType=regexp')
 
-            await driver.page.waitForSelector('[data-test-id="/search"]')
-            await driver.page.waitForSelector('[data-test-active="true"]')
-
             const active = await driver.page.evaluate(() =>
                 document.querySelector('[data-test-id="/search"]')?.getAttribute('data-test-active')
             )
@@ -99,9 +96,6 @@ describe('GlobalNavbar', () => {
 
         test('is highlighted on repo page', async () => {
             await driver.page.goto(driver.sourcegraphBaseUrl + '/github.com/sourcegraph/sourcegraph')
-
-            await driver.page.waitForSelector('[data-test-id="/search"]')
-            await driver.page.waitForSelector('[data-test-active="true"]')
 
             const active = await driver.page.evaluate(() =>
                 document.querySelector('[data-test-id="/search"]')?.getAttribute('data-test-active')
@@ -113,9 +107,6 @@ describe('GlobalNavbar', () => {
         test('is highlighted on repo file page', async () => {
             await driver.page.goto(driver.sourcegraphBaseUrl + '/github.com/sourcegraph/sourcegraph/-/blob/README.md')
 
-            await driver.page.waitForSelector('[data-test-id="/search"]')
-            await driver.page.waitForSelector('[data-test-active="true"]')
-
             const active = await driver.page.evaluate(() =>
                 document.querySelector('[data-test-id="/search"]')?.getAttribute('data-test-active')
             )
@@ -125,9 +116,6 @@ describe('GlobalNavbar', () => {
 
         test('is not highlighted on notebook page', async () => {
             await driver.page.goto(driver.sourcegraphBaseUrl + '/notebooks/id')
-
-            await driver.page.waitForSelector('[data-test-id="/search"]')
-            await driver.page.waitForSelector('[data-test-active="false"]')
 
             const active = await driver.page.evaluate(() =>
                 document.querySelector('[data-test-id="/search"]')?.getAttribute('data-test-active')

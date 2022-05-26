@@ -8,7 +8,7 @@ import { Observable, of } from 'rxjs'
 import { catchError, map, startWith } from 'rxjs/operators'
 
 import { asError, createAggregateError, ErrorLike, isErrorLike, numberWithCommas } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import { Scalars } from '@sourcegraph/shared/src/graphql-operations'
 import * as GQL from '@sourcegraph/shared/src/schema'
 import { LoadingSpinner, useObservable, Alert, Link, Icon } from '@sourcegraph/wildcard'
@@ -191,7 +191,7 @@ function queryPreviewProductSubscriptionInvoice(
         `,
         args
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (
                 !data ||
                 !data.dotcom ||

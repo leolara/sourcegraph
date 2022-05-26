@@ -2,7 +2,7 @@ import { Observable, of } from 'rxjs'
 import { map, mapTo, switchMap } from 'rxjs/operators'
 
 import { createAggregateError } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import * as GQL from '@sourcegraph/shared/src/schema'
 
 import { mutateGraphQL, queryGraphQL, requestGraphQL } from '../../../backend/graphql'
@@ -56,7 +56,7 @@ export function queryViewerRegistryPublishers(): Observable<GQL.RegistryPublishe
             }
         }
     `).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data?.extensionRegistry?.viewerPublishers || (errors && errors.length > 0)) {
                 throw createAggregateError(errors)
             }
@@ -88,7 +88,7 @@ export function createExtension(
         `,
         { publisher, name }
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (
                 !data ||
                 !data.extensionRegistry ||

@@ -2,7 +2,7 @@ import { EMPTY, Observable, Subject } from 'rxjs'
 import { bufferTime, catchError, concatMap, map } from 'rxjs/operators'
 
 import { createAggregateError } from '@sourcegraph/common'
-import { gql, dataOrThrowErrors, GraphQLResult } from '@sourcegraph/http-client'
+import { gql, dataOrThrowErrors } from '@sourcegraph/http-client'
 import { UserEvent, EventSource, Scalars } from '@sourcegraph/shared/src/graphql-operations'
 
 import { requestGraphQL } from '../../backend/graphql'
@@ -81,7 +81,7 @@ export function setUserEmailVerified(user: Scalars['ID'], email: string, verifie
         `,
         { user, email, verified }
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data || (errors && errors.length > 0)) {
                 throw createAggregateError(errors)
             }
@@ -109,7 +109,7 @@ export function logUserEvent(event: UserEvent): void {
         { event, userCookieID: eventLogger.getAnonymousUserID() }
     )
         .pipe(
-            map(({ data, errors }: GraphQLResult<any>) => {
+            map(({ data, errors }) => {
                 if (!data || (errors && errors.length > 0)) {
                     throw createAggregateError(errors)
                 }

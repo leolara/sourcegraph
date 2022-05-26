@@ -83,7 +83,7 @@ export const ModalVideo: React.FunctionComponent<React.PropsWithChildren<ModalVi
                             <Button
                                 variant="icon"
                                 className="p-1"
-                                data-testId="modal-video-close"
+                                data-testid="modal-video-close"
                                 onClick={() => toggleDialog(false)}
                                 aria-label="Close"
                             >

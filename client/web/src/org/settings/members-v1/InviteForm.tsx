@@ -9,7 +9,7 @@ import { map } from 'rxjs/operators'
 import { ErrorAlert } from '@sourcegraph/branded/src/components/alerts'
 import { Form } from '@sourcegraph/branded/src/components/Form'
 import { asError, createAggregateError, isErrorLike } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import { Scalars } from '@sourcegraph/shared/src/graphql-operations'
 import { LoadingSpinner, Button, Link, Alert, Icon, Typography } from '@sourcegraph/wildcard'
 
@@ -213,7 +213,7 @@ function inviteUserToOrganization(
         }
     )
         .pipe(
-            map(({ data, errors }: GraphQLResult<any>) => {
+            map(({ data, errors }) => {
                 if (!data || !data.inviteUserToOrganization || (errors && errors.length > 0)) {
                     eventLogger.log('InviteOrgMemberFailed')
                     throw createAggregateError(errors)
@@ -240,7 +240,7 @@ function addUserToOrganization(username: string, organization: Scalars['ID']): P
         }
     )
         .pipe(
-            map(({ data, errors }: GraphQLResult<any>) => {
+            map(({ data, errors }) => {
                 if (!data || !data.addUserToOrganization || (errors && errors.length > 0)) {
                     eventLogger.log('AddOrgMemberFailed')
                     throw createAggregateError(errors)

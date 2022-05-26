@@ -2,7 +2,7 @@ import { Observable } from 'rxjs'
 import { map, mapTo } from 'rxjs/operators'
 
 import { createAggregateError, isErrorLike, ErrorLike } from '@sourcegraph/common'
-import { gql, dataOrThrowErrors, GraphQLResult } from '@sourcegraph/http-client'
+import { gql, dataOrThrowErrors } from '@sourcegraph/http-client'
 import { TelemetryService } from '@sourcegraph/shared/src/telemetry/telemetryService'
 
 import { requestGraphQL } from '../../backend/graphql'
@@ -65,7 +65,7 @@ export async function addExternalService(
         variables
     )
         .pipe(
-            map(({ data, errors }: GraphQLResult<any>) => {
+            map(({ data, errors }) => {
                 if (!data || !data.addExternalService || (errors && errors.length > 0)) {
                     eventLogger.log('AddExternalServiceFailed')
                     throw createAggregateError(errors)

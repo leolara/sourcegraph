@@ -9,7 +9,7 @@ import { catchError, map, mapTo, startWith, switchMap, tap, filter } from 'rxjs/
 
 import { ErrorAlert } from '@sourcegraph/branded/src/components/alerts'
 import { asError, createAggregateError, isErrorLike } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import * as GQL from '@sourcegraph/shared/src/schema'
 import {
     Button,
@@ -315,7 +315,7 @@ function queryProductSubscription(uuid: string): Observable<GQL.IProductSubscrip
         `,
         { uuid }
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data || !data.dotcom || !data.dotcom.productSubscription || (errors && errors.length > 0)) {
                 throw createAggregateError(errors)
             }
@@ -352,7 +352,7 @@ function queryProductLicenses(
             subscriptionUUID,
         }
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (
                 !data ||
                 !data.dotcom ||
@@ -380,7 +380,7 @@ function archiveProductSubscription(args: ArchiveProductSubscriptionVariables): 
         `,
         args
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data || !data.dotcom || !data.dotcom.archiveProductSubscription || (errors && errors.length > 0)) {
                 throw createAggregateError(errors)
             }

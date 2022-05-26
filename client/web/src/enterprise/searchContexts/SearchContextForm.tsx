@@ -179,7 +179,7 @@ export const SearchContextForm: React.FunctionComponent<React.PropsWithChildren<
     const [hasRepositoriesConfigChanged, setHasRepositoriesConfigChanged] = useState(false)
     const [repositoriesConfig, setRepositoriesConfig] = useState('')
     const onRepositoriesConfigChange = useCallback(
-        (config: React.SetStateAction<string>, isInitialValue: any) => {
+        (config: string, isInitialValue?: boolean) => {
             setRepositoriesConfig(config)
             if (!isInitialValue && config !== repositoriesConfig) {
                 setHasRepositoriesConfigChanged(true)

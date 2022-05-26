@@ -45,9 +45,7 @@ export const DeleteDashboardModal: React.FunctionComponent<
                 <CloseIcon />
             </Button>
 
-            <Typography.H2 className="text-danger" data-testid="delete-modal">
-                Delete ”{dashboard.title}”
-            </Typography.H2>
+            <Typography.H2 className="text-danger">Delete ”{dashboard.title}”</Typography.H2>
 
             <span className="d-block mb-4">
                 This can't be undone. You will still be able to access insights from this dashboard in ”All insights”.

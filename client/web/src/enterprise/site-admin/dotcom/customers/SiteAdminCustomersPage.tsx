@@ -5,7 +5,7 @@ import { Observable, Subject } from 'rxjs'
 import { map } from 'rxjs/operators'
 
 import { createAggregateError } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import * as GQL from '@sourcegraph/shared/src/schema'
 import { Typography } from '@sourcegraph/wildcard'
 
@@ -112,7 +112,7 @@ function queryCustomers(args: { first?: number; query?: string }): Observable<GQ
             query: args.query,
         } as GQL.IUsersOnQueryArguments
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data || !data.users || (errors && errors.length > 0)) {
                 throw createAggregateError(errors)
             }

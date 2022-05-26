@@ -11,13 +11,13 @@ interface Props {
     title: React.ReactNode
 
     /** The subtitle of the certificate. */
-    subtitle?: React.ReactNode | null
+    subtitle?: React.ReactNode
 
     /** The detail text of the certificate. */
-    detail?: React.ReactNode | null
+    detail?: React.ReactNode
 
     /** Rendered after the certificate body (usually consists of a Wildcard <CardFooter />). */
-    footer?: React.ReactNode | null
+    footer?: React.ReactNode
 
     className?: string
 }

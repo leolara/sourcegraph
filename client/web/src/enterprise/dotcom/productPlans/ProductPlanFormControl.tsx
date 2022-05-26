@@ -6,7 +6,7 @@ import { catchError, map, startWith, tap } from 'rxjs/operators'
 
 import { ErrorAlert } from '@sourcegraph/branded/src/components/alerts'
 import { asError, createAggregateError, isErrorLike } from '@sourcegraph/common'
-import { gql, GraphQLResult } from '@sourcegraph/http-client'
+import { gql } from '@sourcegraph/http-client'
 import * as GQL from '@sourcegraph/shared/src/schema'
 import { RadioButton, LoadingSpinner, useObservable, Link } from '@sourcegraph/wildcard'
 
@@ -138,7 +138,7 @@ function queryProductPlans(): Observable<GQL.IProductPlan[]> {
             }
         `
     ).pipe(
-        map(({ data, errors }: GraphQLResult<any>) => {
+        map(({ data, errors }) => {
             if (!data || !data.dotcom || !data.dotcom.productPlans || (errors && errors.length > 0)) {
                 throw createAggregateError(errors)
             }

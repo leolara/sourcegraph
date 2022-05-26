@@ -352,7 +352,7 @@ export class SourcegraphWebApp extends React.Component<
         this.subscriptions.unsubscribe()
     }
 
-    public render(): React.ReactNode | null {
+    public render(): React.ReactNode {
         if (window.pageError && window.pageError.statusCode !== 404) {
             const statusCode = window.pageError.statusCode
             const statusText = window.pageError.statusText
