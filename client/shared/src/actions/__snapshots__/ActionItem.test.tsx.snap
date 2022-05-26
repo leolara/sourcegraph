@@ -163,39 +163,29 @@ exports[`ActionItem run command 2`] = `
 
 exports[`ActionItem run command with error 1`] = `
 <DocumentFragment>
-  <div
-    class="container"
+  <a
+    aria-label="d"
+    class="test-action-item"
+    data-tooltip="d"
+    href=""
+    role="button"
+    tabindex="0"
   >
-    <div
-      class="disabledTooltip"
-      data-tooltip="d"
-      tabindex="0"
+    <img
+      alt="d"
+      src="u"
     />
-    <a
-      aria-label="d"
-      class="test-action-item disabled"
-      data-tooltip="d"
-      disabled=""
-      href=""
-      role="button"
-      tabindex="-1"
-    >
-      <img
-        alt="d"
-        src="u"
-      />
-       g: t 
-    </a>
-  </div>
+     g: t 
+  </a>
 </DocumentFragment>
 `;
 
 exports[`ActionItem run command with error with showInlineError 1`] = `
 <DocumentFragment>
   <a
-    aria-label="Error: x"
+    aria-label="d"
     class="test-action-item"
-    data-tooltip="Error: x"
+    data-tooltip="d"
     href=""
     role="button"
     tabindex="0"
