@@ -58,7 +58,7 @@ export const OldBatchChangePageContent: React.FunctionComponent<React.PropsWithC
 
     return (
         <>
-            <Typography.H2>1. Write a batch spec YAML file</Typography.H2>
+            <Typography.H2 data-testid="batch-spec-yaml-file">1. Write a batch spec YAML file</Typography.H2>
             <Container className="mb-3">
                 <Text className="mb-0">
                     The batch spec (
