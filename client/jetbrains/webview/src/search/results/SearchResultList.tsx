@@ -7,7 +7,7 @@ import { FileSearchResult } from './FileSearchResult'
 import { RepoSearchResult } from './RepoSearchResult'
 import {
     getFirstResultId,
-    getLineMatchIndexForContentMatch,
+    getLineMatchIndexOrSymbolIndexForContentOrSymbolResult,
     getMatchId,
     getMatchIdForResult,
     getSearchResultElement,
@@ -17,9 +17,9 @@ import {
 import styles from './SearchResultList.module.scss'
 
 interface Props {
-    onPreviewChange: (match: SearchMatch, lineMatchIndex?: number) => void
+    onPreviewChange: (match: SearchMatch, lineMatchIndexOrSymbolIndex?: number) => void
     onPreviewClear: () => void
-    onOpen: (result: SearchMatch, lineMatchIndex?: number) => void
+    onOpen: (result: SearchMatch, lineMatchIndexOrSymbolIndex?: number) => void
     matches: SearchMatch[]
 }
 
@@ -35,7 +35,7 @@ export const SearchResultList: React.FunctionComponent<Props> = ({
     const matchIdToMatchMap = useMemo((): Map<string, SearchMatch> => {
         const map = new Map<string, SearchMatch>()
         for (const match of matches) {
-            if (['content', 'commit', 'repo'].includes(match.type)) {
+            if (['content', 'commit', 'repo', 'symbol'].includes(match.type)) {
                 map.set(getMatchId(match), match)
             }
         }
@@ -51,7 +51,9 @@ export const SearchResultList: React.FunctionComponent<Props> = ({
                 if (match) {
                     onPreviewChange(
                         match,
-                        match.type === 'content' ? getLineMatchIndexForContentMatch(resultId) : undefined
+                        match.type === 'content' || match.type === 'symbol'
+                            ? getLineMatchIndexOrSymbolIndexForContentOrSymbolResult(resultId)
+                            : undefined
                     )
                 }
             } else {
@@ -101,7 +103,9 @@ export const SearchResultList: React.FunctionComponent<Props> = ({
                 if (match) {
                     onOpen(
                         match,
-                        match.type === 'content' ? getLineMatchIndexForContentMatch(selectedResultId) : undefined
+                        match.type === 'content' || match.type === 'symbol'
+                            ? getLineMatchIndexOrSymbolIndexForContentOrSymbolResult(selectedResultId)
+                            : undefined
                     )
                 }
                 return
@@ -153,6 +157,15 @@ export const SearchResultList: React.FunctionComponent<Props> = ({
                             />
                         )
                     case 'content':
+                        return (
+                            <FileSearchResult
+                                key={`${match.repository}-${match.path}`}
+                                match={match}
+                                selectedResult={selectedResultId}
+                                selectResult={selectResult}
+                            />
+                        )
+                    case 'symbol':
                         return (
                             <FileSearchResult
                                 key={`${match.repository}-${match.path}`}

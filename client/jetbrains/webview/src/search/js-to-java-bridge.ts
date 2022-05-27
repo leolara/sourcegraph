@@ -1,5 +1,5 @@
 import { splitPath } from '@sourcegraph/shared/src/components/RepoLink'
-import { ContentMatch, SearchMatch } from '@sourcegraph/shared/src/search/stream'
+import { ContentMatch, SearchMatch, SymbolMatch } from '@sourcegraph/shared/src/search/stream'
 
 import { loadContent } from './lib/blob'
 import { PluginConfig, Search, Theme } from './types'
@@ -82,8 +82,8 @@ export async function indicateFinishedLoading(): Promise<void> {
     }
 }
 
-export async function onPreviewChange(match: SearchMatch, lineMatchIndex?: number): Promise<void> {
-    const request = await createPreviewOrOpenRequest(match, lineMatchIndex, 'preview')
+export async function onPreviewChange(match: SearchMatch, lineMatchIndexOrSymbolIndex?: number): Promise<void> {
+    const request = await createPreviewOrOpenRequest(match, lineMatchIndexOrSymbolIndex, 'preview')
     try {
         await callJava(request)
     } catch (error) {
@@ -99,9 +99,9 @@ export async function onPreviewClear(): Promise<void> {
     }
 }
 
-export async function onOpen(match: SearchMatch, lineMatchIndex?: number): Promise<void> {
+export async function onOpen(match: SearchMatch, lineMatchIndexOrSymbolIndex?: number): Promise<void> {
     try {
-        await callJava(await createPreviewOrOpenRequest(match, lineMatchIndex, 'open'))
+        await callJava(await createPreviewOrOpenRequest(match, lineMatchIndexOrSymbolIndex, 'open'))
     } catch (error) {
         console.error(`Failed to open match: ${(error as Error).message}`)
     }
@@ -132,7 +132,7 @@ async function callJava(request: Request): Promise<object> {
 
 export async function createPreviewOrOpenRequest(
     match: SearchMatch,
-    lineMatchIndex: number | undefined,
+    lineMatchIndexOrSymbolIndex: number | undefined,
     action: MatchRequest['action']
 ): Promise<MatchRequest> {
     if (match.type === 'commit') {
@@ -149,7 +149,7 @@ export async function createPreviewOrOpenRequest(
     }
 
     if (match.type === 'content') {
-        return createPreviewOrOpenRequestForContentMatch(match, lineMatchIndex as number, 'preview')
+        return createPreviewOrOpenRequestForContentMatch(match, lineMatchIndexOrSymbolIndex as number, action)
     }
 
     if (match.type === 'repo') {
@@ -163,6 +163,10 @@ export async function createPreviewOrOpenRequest(
                 absoluteOffsetAndLengths: [],
             },
         }
+    }
+
+    if (match.type === 'symbol') {
+        return createPreviewOrOpenRequestForSymbolMatch(match, lineMatchIndexOrSymbolIndex as number, action)
     }
 
     console.log(`Unknown match type: “${match.type}”`)
@@ -200,6 +204,26 @@ export async function createPreviewOrOpenRequestForContentMatch(
             content: content.replaceAll('\r\n', '\n'),
             lineNumber: match.lineMatches[lineMatchIndex].lineNumber,
             absoluteOffsetAndLengths,
+        },
+    }
+}
+
+export async function createPreviewOrOpenRequestForSymbolMatch(
+    match: SymbolMatch,
+    symbolIndex: number,
+    action: MatchRequest['action']
+): Promise<MatchRequest> {
+    const fileName = splitPath(match.path)[1]
+    const content = await loadContent(match)
+
+    return {
+        action,
+        arguments: {
+            fileName,
+            path: match.path,
+            content: content.replaceAll('\r\n', '\n'),
+            lineNumber: -1,
+            absoluteOffsetAndLengths: [],
         },
     }
 }
