@@ -14,7 +14,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/inconshreveable/log15"
 	jsoniter "github.com/json-iterator/go"
 	"github.com/opentracing/opentracing-go"
 	"github.com/prometheus/client_golang/prometheus"
@@ -125,6 +124,7 @@ func main() {
 	}
 
 	gitserver := server.Server{
+		Logger:             log.Scoped("Server", "a gitserver server"),
 		ReposDir:           reposDir,
 		DesiredPercentFree: wantPctFree2,
 		GetRemoteURLFunc: func(ctx context.Context, repo api.RepoName) (string, error) {
@@ -487,6 +487,7 @@ func syncSiteLevelExternalServiceRateLimiters(ctx context.Context, store databas
 func syncRateLimiters(ctx context.Context, store database.ExternalServiceStore, perSecond int) {
 	backoff := 5 * time.Second
 	batchSize := 50
+	logger := log.Scoped("sync rate limiter", "Sync rate limiters from config.")
 
 	// perSecond should be spread across all gitserver instances and we want to wait
 	// until we know about at least one instance.
@@ -496,7 +497,8 @@ func syncRateLimiters(ctx context.Context, store database.ExternalServiceStore, 
 		if instanceCount > 0 {
 			break
 		}
-		log15.Warn("found zero gitserver instance, trying again in %s", backoff)
+
+		logger.With(log.Duration("backoff", backoff)).Warn("found zero gitserver instance, trying again in")
 		time.Sleep(backoff)
 	}
 
@@ -511,7 +513,7 @@ func syncRateLimiters(ctx context.Context, store database.ExternalServiceStore, 
 	for {
 		start := time.Now()
 		if err := syncer.SyncLimitersSince(ctx, lastSuccessfulSync); err != nil {
-			log15.Warn("syncRateLimiters: error syncing rate limits", "error", err)
+			logger.Warn("syncRateLimiters: error syncing rate limits", log.Error(err))
 		} else {
 			lastSuccessfulSync = start
 		}

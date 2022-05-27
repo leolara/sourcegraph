@@ -26,6 +26,7 @@ import (
 	"github.com/sourcegraph/sourcegraph/internal/gitserver"
 	"github.com/sourcegraph/sourcegraph/internal/gitserver/gitdomain"
 	"github.com/sourcegraph/sourcegraph/internal/httpcli"
+	logger "github.com/sourcegraph/sourcegraph/lib/log"
 )
 
 var root string
@@ -67,6 +68,7 @@ func init() {
 
 	srv := &http.Server{
 		Handler: (&server.Server{
+			Logger:   logger.Scoped("gitserver", "gitserver server log"),
 			ReposDir: filepath.Join(root, "repos"),
 			GetRemoteURLFunc: func(ctx context.Context, name api.RepoName) (string, error) {
 				return filepath.Join(root, "remotes", string(name)), nil

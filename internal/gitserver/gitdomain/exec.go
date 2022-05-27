@@ -4,7 +4,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/inconshreveable/log15"
+	log "github.com/sourcegraph/sourcegraph/lib/log"
 )
 
 var (
@@ -75,6 +75,7 @@ func isAllowedGitArg(allowedArgs []string, arg string) bool {
 
 // IsAllowedGitCmd checks if the cmd and arguments are allowed.
 func IsAllowedGitCmd(args []string) bool {
+	logger := log.Scoped("isAllowedGitcmd", "checks if the cmd and arguments are allowed")
 	if len(args) == 0 || len(gitCmdAllowlist) == 0 {
 		return false
 	}
@@ -83,7 +84,7 @@ func IsAllowedGitCmd(args []string) bool {
 	allowedArgs, ok := gitCmdAllowlist[cmd]
 	if !ok {
 		// Command not allowed
-		log15.Warn("IsAllowedGitCmd: command not allowed", "cmd", cmd)
+		logger.Warn("IsAllowedGitCmd: command not allowed", log.String("cmd", cmd))
 		return false
 	}
 	for _, arg := range args[1:] {
@@ -108,7 +109,7 @@ func IsAllowedGitCmd(args []string) bool {
 			}
 
 			if !isAllowedGitArg(allowedArgs, arg) {
-				log15.Warn("IsAllowedGitCmd.isAllowedGitArgcmd", "cmd", cmd, "arg", arg)
+				logger.Warn("IsAllowedGitCmd.isAllowedGitArgcmd", log.String("cmd", cmd), log.String("arg", arg))
 				return false
 			}
 		}

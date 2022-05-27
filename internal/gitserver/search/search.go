@@ -8,7 +8,8 @@ import (
 	"os/exec"
 	"strings"
 
-	"github.com/inconshreveable/log15"
+	"github.com/sourcegraph/sourcegraph/lib/log"
+
 	"golang.org/x/sync/errgroup"
 
 	"github.com/sourcegraph/sourcegraph/internal/api"
@@ -187,6 +188,7 @@ func (cs *CommitSearcher) feedBatches(ctx context.Context, jobs chan job, result
 }
 
 func tryInterpretErrorWithStderr(ctx context.Context, err error, stderr string) error {
+	logger := log.Scoped("tryInterpretErrorWithStderr", "interpret error with stderr")
 	if ctx.Err() != nil {
 		// Ignore errors when context is cancelled
 		return nil
@@ -195,7 +197,7 @@ func tryInterpretErrorWithStderr(ctx context.Context, err error, stderr string) 
 		// Ignore no commits error error
 		return nil
 	}
-	log15.Warn("git search command exited with non-zero status code", "stderr", stderr)
+	logger.Warn("git search command exited with non-zero status code", log.String("stderr", stderr))
 	return err
 }
 
