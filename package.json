@@ -213,7 +213,7 @@
     "@types/react-router": "^5.1.18",
     "@types/react-router-dom": "^5.3.3",
     "@types/reactstrap": "8.4.2",
-    "@types/recharts": "1.8.18",
+    "@types/recharts": "1.8.23",
     "@types/resize-observer-browser": "0.1.4",
     "@types/rimraf": "^3.0.2",
     "@types/sanitize-html": "2.3.0",
